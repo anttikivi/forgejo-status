@@ -9,9 +9,11 @@
   "license": "MIT",
   "author": "Antti Kivi <antti@anttikivi.com>",
   "type": "module",
-  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@actions/core": "3.0.0"
   },
   "devDependencies": {
     "prettier": "3.8.1",
