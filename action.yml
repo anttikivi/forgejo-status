@@ -1,7 +1,5 @@
-name: Push Forgejo Commit Status
-description: Report job status as a commit status on a Forgejo instance. Sends a
-  pending status when the step runs and automatically sends the final status as a
-  post-job step.
+name: Forgejo Status
+description: Report GitHub Actions job status as commit status on Forgejo.
 
 inputs:
   token:
