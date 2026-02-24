@@ -1,16 +1,51 @@
 # forgejo-status
 
-A GitHub Action that reports job status as a commit status on a
+This actions reports job status from GitHub Actions as a commit status on a
 [Forgejo](https://forgejo.org/) instance (e.g.
-[Codeberg](https://codeberg.org/)). It sends a **pending** status when the step
-runs and automatically sends the **final** status (`success`, `failure`, or
-`warning`) as a post-job step.
+[Codeberg](https://codeberg.org/)). It handles the full reporting during a
+workflow, sending a `pending` status when the workflow starts and automatically
+sending the final status of the workflow run (`success`, `failure`, or
+`warning`).
 
 ## Usage
 
-Add the step near the top of your job. The action handles the rest automatically
--- it posts a pending status immediately and updates it with the final result
-after all other steps have completed.
+This actions should be run near the beginning of your job. It sends the
+`pending` status immediately and sends the final status as a post-job step.
+
+See [action.yml](action.yml). You can also see the default configuration and
+usage example below:
+
+<!-- prettier-ignore-start -->
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: anttikivi/forgejo-status@v0.1.0
+        with:
+          # Required. Your Forgejo access token. Should have write access to
+          # the destination repository.
+          token: ""
+          # The Forgejo instance hostname.
+          host: codeberg.org
+          # The repository on Forgejo to target. Should be `owner/repo`.
+          repository: ${{ github.repository }}
+          # The SHA of the commit to set the status to.
+          sha: ${{ github.sha }}
+          # An identifier for the job that has its status pushed it should be
+          # shown on Forgejo.
+          context: ${{ github.workflow }} / ${{ github.job }}
+          # The URL to link to in the job status on Forgejo as the "Details"
+          # link.
+          target-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+```
+
+<!-- prettier-ignore-end -->
+
+A really basic setup could look like this:
+
+<!-- prettier-ignore-start -->
 
 ```yaml
 jobs:
@@ -22,13 +57,17 @@ jobs:
           token: ${{ secrets.CODEBERG_TOKEN }}
 ```
 
-Only `token` is required. All other inputs have defaults derived from the GitHub
-context.
+<!-- prettier-ignore-end -->
+
+The only input that is required is `token`. All other inputs have set defaults
+or defaults derived from the action’s context.
 
 ### Matrix jobs
 
-For matrix jobs, set `context` explicitly so each matrix combination gets its
-own status on the commit:
+For matrix jobs, you should consider setting `context` explicitly so that each
+matrix combination gets its own status on the commit:
+
+<!-- prettier-ignore-start -->
 
 ```yaml
 jobs:
@@ -43,44 +82,10 @@ jobs:
       - uses: anttikivi/forgejo-status@v0.1.0
         with:
           token: ${{ secrets.CODEBERG_TOKEN }}
-          context:
-            "CI / test (${{ matrix.os }}, ${{ matrix.arch }}, ${{ matrix.runner
-            }})"
+          context: CI / test (${{ matrix.os }}, ${{ matrix.arch }}, ${{ matrix.runner }})
 ```
 
-### Self-hosted Forgejo
-
-To use with a self-hosted Forgejo instance instead of Codeberg, set the `host`
-input:
-
-```yaml
-- uses: anttikivi/forgejo-status@v1
-  with:
-    token: ${{ secrets.FORGEJO_TOKEN }}
-    host: forgejo.example.com
-```
-
-## Inputs
-
-| Input        | Required | Default                                      | Description                             |
-| ------------ | -------- | -------------------------------------------- | --------------------------------------- |
-| `token`      | Yes      |                                              | Forgejo API token                       |
-| `host`       | No       | `codeberg.org`                               | Forgejo instance hostname               |
-| `repository` | No       | `${{ github.repository }}`                   | Repository in `owner/name` format       |
-| `sha`        | No       | `${{ github.sha }}`                          | Commit SHA to set the status on         |
-| `context`    | No       | `${{ github.workflow }} / ${{ github.job }}` | Unique identifier for this status check |
-| `target_url` | No       | Link to the workflow run                     | URL to link from the status             |
-
-## How it works
-
-The action runs in two phases:
-
-1. **Main step** -- Sends a `pending` commit status to the Forgejo API and
-   records the current timestamp.
-2. **Post step** (runs `always()`) -- Maps the GitHub job outcome to a Forgejo
-   status (`success`, `failure`, or `warning` for cancelled jobs), calculates
-   elapsed time, and sends the final commit status with a description like
-   "Successful in 2m34s".
+<!-- prettier-ignore-end -->
 
 ## License
 
