@@ -41,7 +41,7 @@ export async function run() {
       description: "Has started running",
     });
   } catch (err) {
-    core.warning(`Failed to send pending status: ${err.message}`);
+    core.setFailed(`Failed to send pending status: ${err.message}`);
   }
 }
 
@@ -83,6 +83,6 @@ export async function runPost() {
       description,
     });
   } catch (err) {
-    core.warning(`Failed to send final status: ${err.message}`);
+    core.setFailed(`Failed to send final status: ${err.message}`);
   }
 }
