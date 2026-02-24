@@ -22,7 +22,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: anttikivi/forgejo-status@v0.1.1
+      - uses: anttikivi/forgejo-status@v0.1.2
         with:
           # Required. Your Forgejo access token. Should have write access to
           # the destination repository.
@@ -52,7 +52,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: anttikivi/forgejo-status@v0.1.1
+      - uses: anttikivi/forgejo-status@v0.1.2
         with:
           token: ${{ secrets.CODEBERG_TOKEN }}
 ```
@@ -79,7 +79,7 @@ jobs:
         arch: [amd64, arm64]
         runner: [ubuntu-latest, macos-latest]
     steps:
-      - uses: anttikivi/forgejo-status@v0.1.1
+      - uses: anttikivi/forgejo-status@v0.1.2
         with:
           token: ${{ secrets.CODEBERG_TOKEN }}
           context: CI / test (${{ matrix.os }}, ${{ matrix.arch }}, ${{ matrix.runner }})
