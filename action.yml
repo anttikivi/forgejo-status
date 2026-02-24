@@ -1,0 +1,32 @@
+name: Push Forgejo Commit Status
+description: Report job status as a commit status on Codeberg. Sends a pending status when the step runs and automatically sends the final status as a post-job step.
+
+inputs:
+  token:
+    description: Codeberg API token
+    required: true
+  repo:
+    description: "Codeberg repository in owner/name format"
+    required: true
+  sha:
+    description: Commit SHA to set the status on
+    required: true
+  context:
+    description: Unique identifier for this status check
+    required: true
+  target_url:
+    description: URL to link from the status
+    required: false
+    default: ""
+  # This input is re-evaluated by the runner when the post step executes,
+  # so it reflects the actual job outcome at that point. Do not set it
+  # manually.
+  job_status:
+    description: "DO NOT SET MANUALLY"
+    default: ${{ job.status }}
+
+runs:
+  using: node24
+  main: main.js
+  post: post.js
+  post-if: always()

@@ -1,2 +1,1 @@
 # forgejo-status
-
