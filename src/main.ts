@@ -27,9 +27,7 @@ type SendStatusOptions = {
 
 function getInputs(): Inputs {
   const repository =
-    core.getInput("repository") ||
-    `${github.context.repo.owner}/${github.context.repo.repo}` ||
-    "";
+    core.getInput("repository") || `${github.context.repo.owner}/${github.context.repo.repo}` || "";
   const targetUrl =
     core.getInput("target-url") ||
     `${github.context.serverUrl}/${repository}/actions/runs/${github.context.runId}`;
@@ -39,9 +37,7 @@ function getInputs(): Inputs {
     host: core.getInput("host") || "codeberg.org",
     repository,
     sha: core.getInput("sha") || github.context.sha,
-    context:
-      core.getInput("context") ||
-      `${github.context.workflow} / ${github.context.job}`,
+    context: core.getInput("context") || `${github.context.workflow} / ${github.context.job}`,
     targetUrl,
   };
 }
@@ -91,9 +87,7 @@ export async function runPost(): Promise<void> {
     const seconds = elapsed % 60;
     const timeString = minutes < 1 ? `${seconds}s` : `${minutes}m${seconds}s`;
     description =
-      state === "success"
-        ? `Successful in ${timeString}`
-        : `Failing after ${timeString}`;
+      state === "success" ? `Successful in ${timeString}` : `Failing after ${timeString}`;
   }
 
   try {
