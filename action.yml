@@ -1,12 +1,18 @@
 name: Push Forgejo Commit Status
-description: Report job status as a commit status on Codeberg. Sends a pending status when the step runs and automatically sends the final status as a post-job step.
+description: Report job status as a commit status on a Forgejo instance. Sends a
+  pending status when the step runs and automatically sends the final status as a
+  post-job step.
 
 inputs:
   token:
-    description: Codeberg API token
+    description: Forgejo API token
     required: true
+  host:
+    description: "Forgejo instance hostname (e.g. codeberg.org)"
+    required: false
+    default: "codeberg.org"
   repo:
-    description: "Codeberg repository in owner/name format"
+    description: "Repository in owner/name format"
     required: true
   sha:
     description: Commit SHA to set the status on

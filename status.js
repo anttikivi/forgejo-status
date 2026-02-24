@@ -1,20 +1,20 @@
-const https = require("https");
-
 /**
- * Send a commit status to the Codeberg API.
+ * Send a commit status to the Forgejo API.
  *
  * @param {object} options
- * @param {string} options.token  - Codeberg API token.
- * @param {string} options.repo   - Repository in "owner/name" format.
- * @param {string} options.sha    - Commit SHA.
- * @param {string} options.state  - One of: pending, success, failure, warning, error.
- * @param {string} options.context - Status context identifier.
+ * @param {string} options.token    - Forgejo API token.
+ * @param {string} options.host     - Forgejo instance hostname (e.g. "codeberg.org").
+ * @param {string} options.repo     - Repository in "owner/name" format.
+ * @param {string} options.sha      - Commit SHA.
+ * @param {string} options.state    - One of: pending, success, failure, warning, error.
+ * @param {string} options.context  - Status context identifier.
  * @param {string} [options.targetUrl]   - URL to link from the status.
  * @param {string} [options.description] - Short description text.
  * @returns {Promise<void>}
  */
-function sendStatus({
+export async function sendStatus({
   token,
+  host,
   repo,
   sha,
   state,
@@ -26,39 +26,19 @@ function sendStatus({
   if (targetUrl) body.target_url = targetUrl;
   if (description) body.description = description;
 
-  const data = JSON.stringify(body);
+  const url = `https://${host}/api/v1/repos/${repo}/statuses/${sha}`;
 
-  return new Promise((resolve, reject) => {
-    const req = https.request(
-      {
-        hostname: "codeberg.org",
-        path: `/api/v1/repos/${repo}/statuses/${sha}`,
-        method: "POST",
-        headers: {
-          Authorization: `token ${token}`,
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(data),
-        },
-      },
-      (res) => {
-        let body = "";
-        res.on("data", (chunk) => (body += chunk));
-        res.on("end", () => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            resolve();
-          } else {
-            reject(
-              new Error(`Codeberg API returned ${res.statusCode}: ${body}`),
-            );
-          }
-        });
-      },
-    );
-
-    req.on("error", reject);
-    req.write(data);
-    req.end();
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `token ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
   });
-}
 
-module.exports = { sendStatus };
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Forgejo API returned ${res.status}: ${text}`);
+  }
+}

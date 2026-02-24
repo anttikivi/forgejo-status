@@ -1,6 +1,7 @@
-const { sendStatus } = require("./status");
+import { sendStatus } from "./status.js";
 
 const token = process.env.INPUT_TOKEN;
+const host = process.env.INPUT_HOST || "codeberg.org";
 const repo = process.env.INPUT_REPO;
 const sha = process.env.INPUT_SHA;
 const context = process.env.INPUT_CONTEXT;
@@ -16,7 +17,7 @@ const state = stateMap[jobStatus] || "failure";
 
 const startTimestamp = parseInt(process.env.STATE_start_timestamp, 10);
 let description = "";
-if (state === "cancelled") {
+if (state === "warning") {
   description = "Has been cancelled";
 } else if (!isNaN(startTimestamp)) {
   const elapsed = Math.floor(Date.now() / 1000) - startTimestamp;
@@ -28,14 +29,17 @@ if (state === "cancelled") {
       : `Failing after ${minutes}m${seconds}s`;
 }
 
-sendStatus({
-  token,
-  repo,
-  sha,
-  state,
-  context,
-  targetUrl,
-  description,
-}).catch((err) => {
+try {
+  await sendStatus({
+    token,
+    host,
+    repo,
+    sha,
+    state,
+    context,
+    targetUrl,
+    description,
+  });
+} catch (err) {
   process.stderr.write(`Warning: ${err.message}\n`);
-});
+}
