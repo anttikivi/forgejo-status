@@ -8,16 +8,14 @@ function getInputs() {
   return {
     token: core.getInput("token", { required: true }),
     host: core.getInput("host") || "codeberg.org",
-    repository:
-      core.getInput("repository") ||
-      `${github.context.repo.owner}/${github.context.repo.repo}`,
+    repository: core.getInput("repository") || process.env.GITHUB_REPOSITORY,
     sha: core.getInput("sha") || github.context.sha,
     context:
       core.getInput("context") ||
       `${github.context.workflow} / ${github.context.job}`,
     targetUrl:
       core.getInput("target_url") ||
-      `${github.context.serverUrl}/${github.context.repo.owner}/${github.context.repo.repo}/actions/runs/${github.context.runId}`,
+      `${github.context.serverUrl}/${process.env.GITHUB_REPOSITORY}/actions/runs/${github.context.runId}`,
   };
 }
 
