@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ forgejo.head_ref || forgejo.run_number }}-${{ forgejo.actor }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: codeberg-tiny
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.2.0
+      - run: npm ci
+      - run: npm run lint
+  check-dist:
+    runs-on: codeberg-tiny
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.2.0
+      - run: rm -rf ./dist
+      - run: npm ci
+      - run: npm run bundle
+      - run: |
+          if [ ! -d dist/ ]; then
+            echo "Expected dist/ directory does not exist. See status below:"
+            ls -la ./
+            exit 1
+          fi
+          if [ "$(git diff --ignore-space-at-eol --text dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff --ignore-space-at-eol --text dist/
+            exit 1
+          fi
