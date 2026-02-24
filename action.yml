@@ -8,30 +8,31 @@ inputs:
     description: Forgejo API token
     required: true
   host:
-    description: "Forgejo instance hostname (e.g. codeberg.org)"
+    description: Forgejo instance hostname (e.g. codeberg.org)
     required: false
-    default: "codeberg.org"
-  repo:
-    description: "Repository in owner/name format"
-    required: true
+    default: codeberg.org
+  repository:
+    description: Repository in owner/name format
+    required: false
+    default: ${{ github.repository }}
   sha:
     description: Commit SHA to set the status on
-    required: true
+    required: false
+    default: ${{ github.sha }}
   context:
     description: Unique identifier for this status check
-    required: true
+    required: false
+    default: ${{ github.workflow }} / ${{ github.job }}
   target_url:
     description: URL to link from the status
     required: false
-    default: ""
-  # This input is re-evaluated by the runner when the post step executes, so it
-  # reflects the actual job outcome at that point. Do not set it manually.
+    default: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
   job_status:
-    description: "DO NOT SET MANUALLY"
+    description: Workaround for getting the job status. Do not set manually
     default: ${{ job.status }}
 
 runs:
   using: node24
   main: dist/index.js
-  post: post.js
+  post: dist/post.js
   post-if: always()

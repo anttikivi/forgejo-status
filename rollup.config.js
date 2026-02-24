@@ -1,15 +1,24 @@
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import terser from "@rollup/plugin-terser";
 
-const config = {
-  input: "src/index.js",
-  output: {
-    esModule: true,
-    file: "dist/index.js",
-    format: "es",
-    sourcemap: true,
-  },
-  plugins: [commonjs(), nodeResolve({ preferBuiltins: true })],
+const plugins = [commonjs(), nodeResolve({ preferBuiltins: true }), terser()];
+
+const output = {
+  esModule: true,
+  format: "es",
+  sourcemap: false,
 };
 
-export default config;
+export default [
+  {
+    input: "src/index.js",
+    output: { ...output, file: "dist/index.js" },
+    plugins,
+  },
+  {
+    input: "src/post.js",
+    output: { ...output, file: "dist/post.js" },
+    plugins,
+  },
+];

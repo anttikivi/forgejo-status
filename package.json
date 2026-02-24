@@ -17,12 +17,14 @@
     "lint": "npm run format:check && eslint ."
   },
   "dependencies": {
-    "@actions/core": "3.0.0"
+    "@actions/core": "3.0.0",
+    "@actions/github": "9.0.0"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@rollup/plugin-commonjs": "29.0.0",
     "@rollup/plugin-node-resolve": "16.0.3",
+    "@rollup/plugin-terser": "0.4.4",
     "eslint": "10.0.2",
     "globals": "17.3.0",
     "prettier": "3.8.1",
