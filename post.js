@@ -1,13 +1,15 @@
+import core from "@actions/core";
+
 import { sendStatus } from "./status.js";
 
-const token = process.env.INPUT_TOKEN;
-const host = process.env.INPUT_HOST || "codeberg.org";
-const repo = process.env.INPUT_REPO;
-const sha = process.env.INPUT_SHA;
-const context = process.env.INPUT_CONTEXT;
-const targetUrl = process.env.INPUT_TARGET_URL || "";
+const token = core.getInput("token", { required: true });
+const host = core.getInput("host") || "codeberg.org";
+const repo = core.getInput("repo", { required: true });
+const sha = core.getInput("sha", { required: true });
+const context = core.getInput("context", { required: true });
+const targetUrl = core.getInput("target_url");
 
-const jobStatus = process.env.INPUT_JOB_STATUS || "failure";
+const jobStatus = core.getInput("job_status") || "failure";
 const stateMap = {
   success: "success",
   cancelled: "warning",
@@ -15,7 +17,7 @@ const stateMap = {
 };
 const state = stateMap[jobStatus] || "failure";
 
-const startTimestamp = parseInt(process.env.STATE_start_timestamp, 10);
+const startTimestamp = parseInt(core.getState("start_timestamp"), 10);
 let description = "";
 if (state === "warning") {
   description = "Has been cancelled";
@@ -41,5 +43,5 @@ try {
     description,
   });
 } catch (err) {
-  process.stderr.write(`Warning: ${err.message}\n`);
+  core.warning(`Failed to send final status: ${err.message}`);
 }

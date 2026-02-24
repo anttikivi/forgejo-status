@@ -1,35 +1,30 @@
-import { appendFileSync } from "node:fs";
+import core from "@actions/core";
 
 import { sendStatus } from "./status.js";
 
-const token = process.env.INPUT_TOKEN;
-const host = process.env.INPUT_HOST || "codeberg.org";
-const repo = process.env.INPUT_REPO;
-const sha = process.env.INPUT_SHA;
-const context = process.env.INPUT_CONTEXT;
-const targetUrl = process.env.INPUT_TARGET_URL || "";
+const token = core.getInput("token", { required: true });
+const host = core.getInput("host") || "codeberg.org";
+const repo = core.getInput("repo", { required: true });
+const sha = core.getInput("sha", { required: true });
+const context = core.getInput("context", { required: true });
+const targetUrl = core.getInput("target_url");
 
-if (!token || !repo || !sha || !context) {
-  process.stderr.write(
-    "Error: missing required input (token, repo, sha, or context)\n",
-  );
-  process.exitCode = 1;
-} else {
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  appendFileSync(process.env.GITHUB_STATE, `start_timestamp=${timestamp}\n`);
+core.setSecret(token);
 
-  try {
-    await sendStatus({
-      token,
-      host,
-      repo,
-      sha,
-      state: "pending",
-      context,
-      targetUrl,
-      description: "Has started running",
-    });
-  } catch (err) {
-    process.stderr.write(`Warning: ${err.message}\n`);
-  }
+const timestamp = Math.floor(Date.now() / 1000).toString();
+core.saveState("start_timestamp", timestamp);
+
+try {
+  await sendStatus({
+    token,
+    host,
+    repo,
+    sha,
+    state: "pending",
+    context,
+    targetUrl,
+    description: "Has started running",
+  });
+} catch (err) {
+  core.warning(`Failed to send pending status: ${err.message}`);
 }
