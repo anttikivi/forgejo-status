@@ -132,7 +132,7 @@ async function sendStatus({
 
   const url = `https://${host}/api/v1/repos/${repository}/statuses/${sha}`;
 
-  core.info(`Pushing status to ${url}`);
+  core.info(`Posting status '${state}' to ${url}`);
 
   const res = await fetch(url, {
     method: "POST",
@@ -147,4 +147,6 @@ async function sendStatus({
     const text = await res.text();
     throw new Error(`Forgejo API returned ${res.status}: ${text}`);
   }
+
+  core.info(`Successfully posted status '${state}' to ${url}`);
 }
