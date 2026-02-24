@@ -1,6 +1,6 @@
 {
   "name": "forgejo-status",
-  "version": "0.1.2",
+  "version": "0.2.0-dev",
   "description": "Push commit check status to Forgejo",
   "license": "MIT",
   "author": "Antti Kivi <antti@anttikivi.com>",
