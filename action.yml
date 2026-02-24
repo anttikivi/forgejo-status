@@ -23,11 +23,11 @@ inputs:
     description: Unique identifier for this status check
     required: false
     default: ${{ github.workflow }} / ${{ github.job }}
-  target_url:
+  target-url:
     description: URL to link from the status
     required: false
     default: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-  job_status:
+  job-status:
     description: Workaround for getting the job status. Do not set manually
     default: ${{ job.status }}
 

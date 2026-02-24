@@ -14,7 +14,7 @@ function getInputs() {
       core.getInput("context") ||
       `${github.context.workflow} / ${github.context.job}`,
     targetUrl:
-      core.getInput("target_url") ||
+      core.getInput("target-url") ||
       `${github.context.serverUrl}/${process.env.GITHUB_REPOSITORY}/actions/runs/${github.context.runId}`,
   };
 }
@@ -46,7 +46,7 @@ export async function run() {
 export async function runPost() {
   const inputs = getInputs();
 
-  const jobStatus = core.getInput("job_status") || "failure";
+  const jobStatus = core.getInput("job-status") || "failure";
   const stateMap = {
     success: "success",
     cancelled: "warning",
