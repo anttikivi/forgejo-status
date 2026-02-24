@@ -32,6 +32,6 @@ inputs:
 
 runs:
   using: node24
-  main: main.js
+  main: dist/index.js
   post: post.js
   post-if: always()

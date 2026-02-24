@@ -10,14 +10,24 @@
   "author": "Antti Kivi <antti@anttikivi.com>",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf ./dist && rollup --config rollup.config.js",
+    "bundle": "npm run format && npm run build",
+    "format": "prettier --write .",
+    "format:check": "prettier --write .",
+    "lint": "npm run format:check && eslint ."
   },
   "dependencies": {
     "@actions/core": "3.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@rollup/plugin-commonjs": "29.0.0",
+    "@rollup/plugin-node-resolve": "16.0.3",
+    "eslint": "10.0.2",
+    "globals": "17.3.0",
     "prettier": "3.8.1",
     "prettier-plugin-organize-imports": "4.3.0",
-    "prettier-plugin-packagejson": "3.0.0"
+    "prettier-plugin-packagejson": "3.0.0",
+    "rollup": "4.59.0"
   }
 }
