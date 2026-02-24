@@ -14,21 +14,19 @@
     "bundle": "npm run format && npm run build",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "lint": "npm run format:check && NODE_OPTIONS=\"--experimental-strip-types\" eslint . --flag unstable_native_nodejs_ts_config"
+    "lint": "npm run format:check && oxlint"
   },
   "dependencies": {
     "@actions/core": "3.0.0",
     "@actions/github": "9.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
     "@types/node": "22.13.5",
-    "eslint": "10.0.2",
-    "globals": "17.3.0",
     "oxfmt": "0.35.0",
+    "oxlint": "1.50.0",
+    "oxlint-tsgolint": "0.14.2",
     "rolldown": "1.0.0-rc.5",
     "rollup-plugin-esbuild": "6.2.1",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.56.1"
+    "typescript": "5.9.3"
   }
 }
