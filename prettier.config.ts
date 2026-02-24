@@ -1,5 +1,6 @@
-/** @type {import("prettier").Config} */
-const config = {
+import type { Config } from "prettier";
+
+const config: Config = {
   plugins: ["prettier-plugin-packagejson", "prettier-plugin-organize-imports"],
   arrowParens: "always",
   bracketSpacing: true,
