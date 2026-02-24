@@ -1,3 +1,5 @@
+import * as core from "@actions/core";
+
 export async function sendStatus({
   token,
   host,
@@ -19,6 +21,8 @@ export async function sendStatus({
   }
 
   const url = `https://${host}/api/v1/repos/${repo}/statuses/${sha}`;
+
+  core.info(`Pushing status to ${url}`);
 
   const res = await fetch(url, {
     method: "POST",
