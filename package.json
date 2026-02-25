@@ -24,7 +24,7 @@
     "@types/node": "24.10.13",
     "oxfmt": "0.35.0",
     "oxlint": "1.50.0",
-    "oxlint-tsgolint": "0.14.2",
+    "oxlint-tsgolint": "0.15.0",
     "rolldown": "1.0.0-rc.5",
     "rollup-plugin-esbuild": "6.2.1",
     "typescript": "5.9.3"
