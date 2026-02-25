@@ -8,6 +8,11 @@
         "executionMode": "branch",
         "fileFilters": ["dist/**"]
       }
+    },
+    {
+      "matchPackageNames": ["@types/node"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }
