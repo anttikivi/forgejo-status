@@ -1,6 +1,3 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "constraints": {
-    "node": "24"
-  }
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
 }
