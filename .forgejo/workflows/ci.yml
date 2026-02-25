@@ -1,12 +1,15 @@
-name: CI
+name: ci
 
 on:
-  push:
   pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 concurrency:
-  group: ${{ forgejo.head_ref || forgejo.run_number }}-${{ forgejo.actor }}
-  cancel-in-progress: true
+  group: ${{ forgejo.workflow }}-${{ forgejo.event.pull_request.number || forgejo.ref }}
+  cancel-in-progress: ${{ forgejo.event_name == 'pull_request' }}
 
 permissions:
   contents: read
