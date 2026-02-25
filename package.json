@@ -21,7 +21,7 @@
     "@actions/github": "9.0.0"
   },
   "devDependencies": {
-    "@types/node": "22.13.5",
+    "@types/node": "24.10.13",
     "oxfmt": "0.35.0",
     "oxlint": "1.50.0",
     "oxlint-tsgolint": "0.14.2",
