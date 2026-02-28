@@ -2,7 +2,7 @@
   "name": "forgejo-status",
   "version": "0.2.0-dev",
   "description": "Push commit check status to Forgejo",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "Antti Kivi <antti@anttikivi.com>",
   "repository": {
     "type": "git",
