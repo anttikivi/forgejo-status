@@ -25,7 +25,7 @@
     "oxfmt": "0.40.0",
     "oxlint": "1.56.0",
     "oxlint-tsgolint": "0.16.0",
-    "rolldown": "1.0.0-rc.9",
+    "rolldown": "1.2.8",
     "rollup-plugin-esbuild": "6.2.1",
     "typescript": "5.9.3"
   }
